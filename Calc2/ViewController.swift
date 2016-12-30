@@ -12,99 +12,51 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var output: UILabel!
     
-    @IBAction func buttonOne(_ sender: UIButton) {
-        output.text = output.text! + "1"
-        
-    }
-    @IBAction func buttonTwo(_ sender: AnyObject) {
-        output.text = output.text! + "2"
-    }
-    @IBAction func buttonThree(_ sender: AnyObject) {
-        output.text = output.text! + "3"
-    }
-    @IBAction func buttonFour(_ sender: UIButton) {
-        output.text = output.text! + "4"
-    }
-    @IBAction func buttonFive(_ sender: UIButton) {
-        output.text = output.text! + "5"
-        
-    }
-    @IBAction func buttonSix(_ sender: AnyObject) {
-        output.text = output.text! + "6"
-    }
-    @IBAction func buttonSeven(_ sender: AnyObject) {
-        output.text = output.text! + "7"
-    }
-    @IBAction func buttonEight(_ sender: UIButton) {
-        output.text = output.text! + "8"
-    }
-    @IBAction func buttonNine(_ sender: UIButton) {
-        output.text = output.text! + "9"
-        
-    }
-    @IBAction func buttonZero(_ sender: AnyObject) {
-        if(nearNumber(num:output.text!) != "0"){
-            output.text = output.text! + "0"
+    //ボタンのタイトルの数字を表示部に表示する。
+    @IBAction func buttonNumber(_ sender: UIButton) {
+        let title = sender.title(for:UIControlState.normal)!
+        if(nearNumber(num:output.text!) != "0" && getPre(num:output.text!) != ")"){
+            output.text = output.text! + title
         }
     }
-    @IBAction func buttonZeroZero(_ sender: AnyObject) {
-        if(nearNumber(num:output.text!) != "0"){
-            output.text = output.text! + "00"
-        }
-    }
+    
+    //小数点を表示部に表示する。
     @IBAction func buttonPoint(_ sender: UIButton) {
-        output.text = output.text! + "."
-    }
-    @IBAction func buttonPlus(_ sender: AnyObject) {
-        var pre = getPre(num:output.text!)
-        if(isInSignal(num: pre) == false){
-            output.text = output.text! + "+"
+        if(isInPoint(num: nearNumber(num: output.text!)) == false){
+            output.text = output.text! + "."
         }
     }
-    @IBAction func buttonMinus(_ sender: AnyObject) {
-        var pre = getPre(num:output.text!)
+    @IBAction func buttonShisoku(_ sender: AnyObject) {
+        let title = sender.title(for:UIControlState.normal)!
+        let pre = getPre(num:output.text!)
         if(isInSignal(num: pre) == false){
-            output.text = output.text! + "-"
+            output.text = output.text! + title
         }
     }
-    @IBAction func buttonSum(_ sender: UIButton) {
-        var pre = getPre(num:output.text!)
-        if(isInSignal(num: pre) == false){
-            output.text = output.text! + "*"
-        }
-    }
-    @IBAction func buttonDivide(_ sender: UIButton) {
-        var pre = getPre(num:output.text!)
-        if(isInSignal(num: pre) == false){
-            output.text = output.text! + "/"
-        }
-    }
+    
+    //カッコを入力する。
     @IBAction func buttonKakko(_ sender: UIButton) {
-        var bool = true
-        var i = 0
-        for index in output.text!.characters.reversed() {
-            if(index == "(" ){
-                bool = false
-                break
-            }else if(index == ")"){
-                bool = true
-                break
-            }
-            i = i + 1
-        }
-        var pre = getPre(num:output.text!)
-        var shiki = (output.text! as NSString).substring(from:output.text!.characters.count - i)
+        let bool = kakkoToji(num: output.text!).0
+        let i = kakkoToji(num: output.text!).1
+        let pre = getPre(num:output.text!)
+        let shiki = (output.text! as NSString).substring(from:output.text!.characters.count - i)
         if(isInSignal(num: pre) == true || pre == ""){
             if(bool == true){
                 output.text = output.text! + "("
             }
         }else if(isInSignal(num: shiki) == true && isInSignal(num: pre) == false){
-            output.text = output.text! + ")"
+            if(bool == false){
+                output.text = output.text! + ")"
+            }
         }
     }
+    
+    //表示部の文字を全てクリアする
     @IBAction func crearNum(_ sender: AnyObject) {
         output.text = ""
     }
+    
+    //表示部の文字を１文字削除
     @IBAction func deleteNum(_ sender: AnyObject) {
         var str:String = output.text!
         if(str.characters.count > 0){
@@ -112,14 +64,56 @@ class ViewController: UIViewController {
         }
         output.text = str
     }
+    
+    @IBAction func equal(_ sender: UIButton) {
+        let str:String = output.text!
+        if(suushikiCheck(num: str)){
+            let expression = NSExpression(format: str)
+            let out = expression.expressionValue(with: nil, context: nil) as! Double
+            output.text! = String(out)
+            //LINE連携仕掛り中
+            /*var textout: String! = String(out)
+            var allowedCharacterSet = NSMutableCharacterSet.alphanumeric()
+            allowedCharacterSet.addCharacters(in:"-._~")
+            var encodeMessage: String! = (textout as NSString).addingPercentEncoding(withAllowedCharacters: allowedCharacterSet as CharacterSet)!
+            var messageURL: NSURL! = NSURL( string: "line://msg/text/" + encodeMessage )
+            
+            if (UIApplication.shared.canOpenURL(messageURL as URL)) {
+                UIApplication.shared.openURL( messageURL  as URL)
+            }*/
+        }
+    }
+    
+    //数式が正しいかチェックする。正しくない場合、アラートを表示。
+    func suushikiCheck(num:String) -> Bool{
+        var bool:Bool = true
+        let str:String = output.text!
+        let ngalert = UIAlertController(title: "数式不正エラー", message: "数式を正しく入れてください", preferredStyle:  UIAlertControllerStyle.alert)
+        let defaultAction: UIAlertAction = UIAlertAction(title: "OK", style:UIAlertActionStyle.default, handler:{
+            (action: UIAlertAction!) -> Void in
+        })
+        ngalert.addAction(defaultAction)
+        
+        if(kakkoToji(num: str).0 == false || isInSignal(num: getPre(num: str)) == true){
+            present(ngalert, animated: true, completion: nil)
+            bool = false
+        }
+        return bool
+    }
+    
+    
+    
+    //直前に入力されている文字を取得する。
     func getPre(num:String) -> String{
-        var index:Int = num.characters.count
+        let index:Int = num.characters.count
         var pre = ""
         if(index > 0){
             pre = (num as NSString).substring(from: index - 1)
         }
         return pre
     }
+    
+    //直前に入力されている数字の固まりを取得する。
     func nearNumber(num:String) -> String {
         var nnum:String = ""
         var i:Int = 0
@@ -131,9 +125,10 @@ class ViewController: UIViewController {
             }
             nnum = (num as NSString).substring(from:num.characters.count - i)
         }
-        print(nnum)
         return String(nnum)
     }
+    
+    //引数の文字が四則演算かどうかを判定する。
     func isInSignal(num:String) -> Bool {
         var bool = false
         for index in num.characters.reversed() {
@@ -144,6 +139,35 @@ class ViewController: UIViewController {
         }
         return bool
     }
+    
+    func isInPoint(num:String) -> Bool {
+        var bool = false
+        for index in num.characters.reversed() {
+            if(index == "."){
+                bool = true
+                break
+            }
+        }
+        return bool
+    }
+    
+    //カッコが閉じられているかチェック、する。
+    func kakkoToji(num:String) -> (Bool,Int) {
+        var bool = true
+        var i = 0
+        for index in num.characters.reversed() {
+            if(index == "(" ){
+                bool = false
+                break
+            }else if(index == ")"){
+                bool = true
+                break
+            }
+            i = i + 1
+        }
+        return (bool,i)
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
