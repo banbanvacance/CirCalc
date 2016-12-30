@@ -70,17 +70,31 @@ class ViewController: UIViewController {
         if(suushikiCheck(num: str)){
             let expression = NSExpression(format: str)
             let out = expression.expressionValue(with: nil, context: nil) as! Double
+            let textout: String! = output.text! + "=" + String(out)
             output.text! = String(out)
             //LINE連携仕掛り中
-            /*var textout: String! = String(out)
-            var allowedCharacterSet = NSMutableCharacterSet.alphanumeric()
-            allowedCharacterSet.addCharacters(in:"-._~")
-            var encodeMessage: String! = (textout as NSString).addingPercentEncoding(withAllowedCharacters: allowedCharacterSet as CharacterSet)!
-            var messageURL: NSURL! = NSURL( string: "line://msg/text/" + encodeMessage )
-            
-            if (UIApplication.shared.canOpenURL(messageURL as URL)) {
-                UIApplication.shared.openURL( messageURL  as URL)
-            }*/
+            let ngalert = UIAlertController(title: "LINE送信", message: "LINEに送信しますか？", preferredStyle:  UIAlertControllerStyle.alert)
+            let okAction = UIAlertAction(title: "はい", style: .default) {
+                action in NSLog("OK！")
+                let allowedCharacterSet = NSMutableCharacterSet.alphanumeric()
+                allowedCharacterSet.addCharacters(in:"-._~")
+                let encodeMessage: String! = (textout as NSString).addingPercentEncoding(withAllowedCharacters: allowedCharacterSet as CharacterSet)!
+                let messageURL: NSURL! = NSURL( string: "line://msg/text/" + encodeMessage )
+                
+                if (UIApplication.shared.canOpenURL(messageURL as URL)) {
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(messageURL  as URL, options: [:], completionHandler: nil)
+                    } else {
+                        UIApplication.shared.openURL(messageURL  as URL)
+                    }
+                }
+            }
+            let cancelAction = UIAlertAction(title: "いいえ", style: .cancel) {
+                action in NSLog("Cancel！")
+            }
+            ngalert.addAction(okAction)
+            ngalert.addAction(cancelAction)
+            present(ngalert, animated: true, completion: nil)
         }
     }
     
