@@ -9,8 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    private var myButton: UIButton!
 
     @IBOutlet weak var output: UILabel!
+    
+    let calcSet:Array = [".","00","0","1","2","3","4","5","6","7","8","9","+","-","*","/","()"]
     
     //ボタンのタイトルの数字を表示部に表示する。
     @IBAction func buttonNumber(_ sender: UIButton) {
@@ -185,7 +189,11 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        var myButton = MyButton(frame: CGRect(x:200, y:200, width:100, height:100))
+        myButton.setDivideNum(divNum:calcSet.count,startNum: 0)
+        myButton.addTarget(self, action: #selector(ViewController.onClickMyButton(sender:)), for: .touchUpInside)
+        self.view.addSubview(myButton)
     }
 
     override func didReceiveMemoryWarning() {
@@ -193,6 +201,10 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    func onClickMyButton(sender: UIButton){
+        
+    }
+    
 
 }
 

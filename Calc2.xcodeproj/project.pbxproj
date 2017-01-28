@@ -14,6 +14,8 @@
 		DD9424F41DF4352900AF4CE6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD9424F21DF4352900AF4CE6 /* LaunchScreen.storyboard */; };
 		DD9424FF1DF4352A00AF4CE6 /* Calc2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9424FE1DF4352A00AF4CE6 /* Calc2Tests.swift */; };
 		DD94250A1DF4352A00AF4CE6 /* Calc2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9425091DF4352A00AF4CE6 /* Calc2UITests.swift */; };
+		DD9E6A011E25212100EE42BC /* CustomClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9E6A001E25212100EE42BC /* CustomClass.swift */; };
+		DD9E6A031E252D2600EE42BC /* MyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9E6A021E252D2600EE42BC /* MyButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		DD9425051DF4352A00AF4CE6 /* Calc2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Calc2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD9425091DF4352A00AF4CE6 /* Calc2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calc2UITests.swift; sourceTree = "<group>"; };
 		DD94250B1DF4352A00AF4CE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DD9E6A001E25212100EE42BC /* CustomClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomClass.swift; sourceTree = "<group>"; };
+		DD9E6A021E252D2600EE42BC /* MyButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +107,8 @@
 				DD9424F01DF4352900AF4CE6 /* Assets.xcassets */,
 				DD9424F21DF4352900AF4CE6 /* LaunchScreen.storyboard */,
 				DD9424F51DF4352900AF4CE6 /* Info.plist */,
+				DD9E6A001E25212100EE42BC /* CustomClass.swift */,
+				DD9E6A021E252D2600EE42BC /* MyButton.swift */,
 			);
 			path = Calc2;
 			sourceTree = "<group>";
@@ -260,8 +266,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD9E6A011E25212100EE42BC /* CustomClass.swift in Sources */,
 				DD9424EC1DF4352900AF4CE6 /* ViewController.swift in Sources */,
 				DD9424EA1DF4352900AF4CE6 /* AppDelegate.swift in Sources */,
+				DD9E6A031E252D2600EE42BC /* MyButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,7 +426,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = vandom.Calc2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -433,7 +441,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = vandom.Calc2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
